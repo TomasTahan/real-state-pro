@@ -1,8 +1,11 @@
 # Dockerfile para Temporal Worker
-FROM node:20-alpine AS base
+# Usamos debian-slim en lugar de alpine porque @temporalio/core-bridge necesita glibc
+FROM node:20-slim AS base
 
 # Instalar dependencias necesarias
-RUN apk add --no-cache libc6-compat
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -20,14 +23,19 @@ COPY temporal/ .
 RUN npm run build
 
 # Production stage
-FROM node:20-alpine AS runner
+FROM node:20-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
 
+# Instalar dependencias del sistema necesarias
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
 # Crear usuario no-root
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 temporalworker
+RUN groupadd --system --gid 1001 nodejs && \
+    useradd --system --uid 1001 --gid nodejs temporalworker
 
 # Copiar archivos necesarios
 COPY --from=deps --chown=temporalworker:nodejs /app/node_modules ./node_modules
