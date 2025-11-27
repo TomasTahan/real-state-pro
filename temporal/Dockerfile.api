@@ -6,8 +6,8 @@ RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-# Copiar archivos de dependencias
-COPY package*.json ./
+# Copiar archivos de dependencias desde temporal/
+COPY temporal/package*.json ./
 
 # Instalar dependencias de producción
 FROM base AS deps
@@ -16,7 +16,7 @@ RUN npm ci --only=production
 # Build stage
 FROM base AS builder
 RUN npm ci
-COPY . .
+COPY temporal/ .
 RUN npm run build
 
 # Production stage
