@@ -1,0 +1,35 @@
+# docker-compose.yml para desarrollo local
+# Ejecuta: docker-compose up -d
+version: '3.8'
+
+services:
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    environment:
+      - TEMPORAL_ADDRESS=${TEMPORAL_ADDRESS}
+      - TEMPORAL_NAMESPACE=${TEMPORAL_NAMESPACE}
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - temporal-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    environment:
+      - TEMPORAL_ADDRESS=${TEMPORAL_ADDRESS}
+      - TEMPORAL_NAMESPACE=${TEMPORAL_NAMESPACE}
+      - API_PORT=4000
+      - NODE_ENV=production
+    ports:
+      - "4000:4000"
+    restart: unless-stopped
+    networks:
+      - temporal-network
+
+networks:
+  temporal-network:
+    driver: bridge

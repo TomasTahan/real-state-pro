@@ -11,12 +11,17 @@
     "start:api": "node dist/api.js",
     "type-check": "tsc --noEmit"
   },
-  "keywords": ["temporal", "workflow", "worker"],
+  "keywords": [
+    "temporal",
+    "workflow",
+    "worker"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@temporalio/client": "^1.13.2",
     "@temporalio/worker": "^1.13.2",
+    "@temporalio/workflow": "^1.13.2",
     "dotenv": "^17.2.3",
     "express": "^5.1.0"
   },

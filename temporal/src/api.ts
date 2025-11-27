@@ -5,26 +5,51 @@ import { Connection, Client } from "@temporalio/client";
 const app = express();
 app.use(express.json());
 
-async function getClient() {
-  const connection = await Connection.connect({
+// Singleton client - se inicializa una vez
+let client: Client | null = null;
+let connection: Connection | null = null;
+
+async function getClient(): Promise<Client> {
+  if (client) return client;
+
+  connection = await Connection.connect({
     address: process.env.TEMPORAL_ADDRESS || "localhost:7233",
-    // Si configuras TLS en Temporal, acá va config extra
   });
 
-  return new Client({
+  client = new Client({
     connection,
     namespace: process.env.TEMPORAL_NAMESPACE || "default",
   });
+
+  console.log(
+    `[Temporal API] Connected to ${
+      process.env.TEMPORAL_ADDRESS || "localhost:7233"
+    }`
+  );
+
+  return client;
 }
+
+// Health check endpoint
+app.get("/health", (_req, res) => {
+  res.json({ ok: true, timestamp: new Date().toISOString() });
+});
 
 // POST /workflows/create-user
 app.post("/workflows/create-user", async (req, res) => {
   try {
     const { userId, email } = req.body;
 
-    const client = await getClient();
+    if (!userId || !email) {
+      res
+        .status(400)
+        .json({ ok: false, error: "userId and email are required" });
+      return;
+    }
 
-    const handle = await client.workflow.start("createUserWorkflow", {
+    const temporalClient = await getClient();
+
+    const handle = await temporalClient.workflow.start("createUserWorkflow", {
       args: [{ userId, email }],
       taskQueue: "default",
       workflowId: `create-user-${userId}-${Date.now()}`,
@@ -35,13 +60,26 @@ app.post("/workflows/create-user", async (req, res) => {
       workflowId: handle.workflowId,
       runId: handle.firstExecutionRunId,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Unknown error";
     console.error("Error starting workflow:", err);
-    res.status(500).json({ ok: false, error: err.message ?? "Unknown error" });
+    res.status(500).json({ ok: false, error: message });
   }
 });
 
 const PORT = Number(process.env.API_PORT || 4000);
+
+// Graceful shutdown
+const shutdown = async () => {
+  console.log("[Temporal API] Shutting down...");
+  if (connection) {
+    await connection.close();
+  }
+  process.exit(0);
+};
+
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
 
 app.listen(PORT, () => {
   console.log(`[Temporal API] Listening on port ${PORT}`);
