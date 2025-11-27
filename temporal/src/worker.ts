@@ -1,5 +1,6 @@
 import { NativeConnection, Worker } from "@temporalio/worker";
-import * as activities from "./activities/example.activities";
+import * as exampleActivities from "./activities/example.activities";
+import * as userRegistrationActivities from "./activities/user-registration.activities";
 
 async function run() {
   // Conectar al servidor Temporal
@@ -7,9 +8,16 @@ async function run() {
     address: process.env.TEMPORAL_ADDRESS || "localhost:7233",
   });
 
+  // Combinar todas las activities
+  const activities = {
+    ...exampleActivities,
+    ...userRegistrationActivities,
+  };
+
   const worker = await Worker.create({
     connection,
-    workflowsPath: require.resolve("./workflows/example.workflow"),
+    // El worker puede ejecutar múltiples workflows
+    workflowsPath: require.resolve("./workflows"),
     activities,
     taskQueue: "default",
     namespace: process.env.TEMPORAL_NAMESPACE || "default",
