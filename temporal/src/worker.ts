@@ -1,6 +1,7 @@
 import { NativeConnection, Worker } from "@temporalio/worker";
 import * as exampleActivities from "./activities/example.activities";
 import * as userRegistrationActivities from "./activities/user-registration.activities";
+import * as webhookActivities from "./activities/webhook.activities";
 
 async function run() {
   // Conectar al servidor Temporal
@@ -12,6 +13,7 @@ async function run() {
   const activities = {
     ...exampleActivities,
     ...userRegistrationActivities,
+    ...webhookActivities,
   };
 
   const worker = await Worker.create({

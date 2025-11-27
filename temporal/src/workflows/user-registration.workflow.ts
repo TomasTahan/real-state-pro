@@ -1,11 +1,9 @@
-import { proxyActivities, sleep } from "@temporalio/workflow";
-import type * as activities from "../activities/user-registration.activities";
+import { proxyActivities, sleep, workflowInfo } from "@temporalio/workflow";
+import type * as registrationActivities from "../activities/user-registration.activities";
+import type * as webhookActivities from "../activities/webhook.activities";
 
 /**
- * Configuración de las activities
- *
- * startToCloseTimeout: Tiempo máximo que puede tardar una activity
- * retry: Política de reintentos automáticos
+ * Configuración de las activities de registro
  */
 const {
   validateEmail,
@@ -13,13 +11,24 @@ const {
   sendWelcomeEmail,
   sendFollowUpEmail,
   trackUserRegistration,
-} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "5 minutes", // Timeout por activity
+} = proxyActivities<typeof registrationActivities>({
+  startToCloseTimeout: "5 minutes",
   retry: {
-    initialInterval: "1s", // Primer reintento después de 1 segundo
-    backoffCoefficient: 2, // Duplica el tiempo en cada reintento
-    maximumAttempts: 3, // Máximo 3 intentos
-    maximumInterval: "30s", // Máximo 30 segundos entre reintentos
+    initialInterval: "1s",
+    backoffCoefficient: 2,
+    maximumAttempts: 3,
+    maximumInterval: "30s",
+  },
+});
+
+/**
+ * Configuración de las activities de webhook
+ */
+const { notifyNextJs } = proxyActivities<typeof webhookActivities>({
+  startToCloseTimeout: "30 seconds",
+  retry: {
+    initialInterval: "1s",
+    maximumAttempts: 5, // Más reintentos para webhooks
   },
 });
 
@@ -61,6 +70,7 @@ export async function userRegistrationWorkflow(
   input: UserRegistrationInput
 ): Promise<UserRegistrationOutput> {
   const { userId, email, name } = input;
+  const { workflowId } = workflowInfo();
 
   try {
     // PASO 1: Validar email
@@ -68,7 +78,7 @@ export async function userRegistrationWorkflow(
     await validateEmail(email);
 
     // PASO 2: Crear usuario en DB
-    const user = await createUserInDatabase({ id: userId, email, name });
+    await createUserInDatabase({ id: userId, email, name });
 
     // PASO 3: Enviar email de bienvenida
     await sendWelcomeEmail(email, name);
@@ -88,18 +98,38 @@ export async function userRegistrationWorkflow(
     console.log(`[Workflow] Enviando email de seguimiento...`);
     await sendFollowUpEmail(email, name);
 
-    return {
+    const result = {
       success: true,
       userId,
       message: "Usuario registrado y email de seguimiento enviado",
     };
+
+    // PASO 7: Notificar a Next.js que terminó
+    await notifyNextJs({
+      workflowId,
+      userId,
+      status: "completed",
+      result,
+    });
+
+    return result;
   } catch (error) {
     console.error(`[Workflow] Error en registro de usuario:`, error);
 
-    return {
+    const result = {
       success: false,
       userId,
       message: error instanceof Error ? error.message : "Error desconocido",
     };
+
+    // Notificar a Next.js sobre el error
+    await notifyNextJs({
+      workflowId,
+      userId,
+      status: "failed",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+
+    return result;
   }
 }
