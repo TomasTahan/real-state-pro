@@ -12,7 +12,7 @@
 
 # testing
 /coverage
-
+.mcp.json
 # next.js
 /.next/
 /out/
