@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 import {
   IconBuilding,
   IconCamera,
@@ -35,13 +37,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
+const navMainData = [
     {
       title: "Dashboard",
       url: "/dashboard",
@@ -67,8 +63,9 @@ const data = {
       url: "/configuracion",
       icon: IconSettings,
     },
-  ],
-  navClouds: [
+  ];
+
+const navClouds = [
     {
       title: "Capture",
       icon: IconCamera,
@@ -115,8 +112,9 @@ const data = {
         },
       ],
     },
-  ],
-  navSecondary: [
+  ];
+
+const navSecondary = [
     {
       title: "Settings",
       url: "#",
@@ -132,8 +130,9 @@ const data = {
       url: "#",
       icon: IconSearch,
     },
-  ],
-  documents: [
+  ];
+
+const documents = [
     {
       name: "Data Library",
       url: "#",
@@ -149,10 +148,74 @@ const data = {
       url: "#",
       icon: IconFileWord,
     },
-  ],
-};
+  ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const [user, setUser] = useState<{
+    name: string;
+    email: string;
+    avatar: string;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const supabase = createClient();
+        const { data: { user: authUser } } = await supabase.auth.getUser();
+
+        if (authUser) {
+          setUser({
+            name: authUser.user_metadata?.name || authUser.email || "Usuario",
+            email: authUser.email || "sin@email.com",
+            avatar: authUser.user_metadata?.avatar_url || "/avatars/shadcn.jpg",
+          });
+        }
+      } catch (error) {
+        console.error("Error loading user:", error);
+        setUser({
+          name: "Usuario",
+          email: "sin@email.com",
+          avatar: "/avatars/shadcn.jpg",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUser();
+  }, []);
+
+  if (loading || !user) {
+    return (
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              className="data-[slot=sidebar-menu-button]:!p-1.5"
+            >
+              <a href="#">
+                <IconInnerShadowTop className="!size-5" />
+                <span className="text-base font-semibold">Acme Inc.</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
+        <NavMain items={navMainData} />
+        {/* <NavDocuments items={documents} /> */}
+        {/* <NavSecondary items={navSecondary} className="mt-auto" /> */}
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={user} />
+      </SidebarFooter>
+    </Sidebar>
+    );
+  }
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -171,12 +234,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        {/* <NavDocuments items={data.documents} /> */}
-        {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
+        <NavMain items={navMainData} />
+        {/* <NavDocuments items={documents} /> */}
+        {/* <NavSecondary items={navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );
