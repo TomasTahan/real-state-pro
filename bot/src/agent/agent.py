@@ -78,7 +78,7 @@ class RealStateAgent:
             # Resumir sesión existente
             return ClaudeAgentOptions(
                 mcp_servers=self._get_mcp_servers(),
-                permission_mode="bypassPermissions",
+                permission_mode="acceptEdits",
                 model="sonnet",
                 resume=session_id,
                 env=openrouter_env,
@@ -88,7 +88,7 @@ class RealStateAgent:
             return ClaudeAgentOptions(
                 system_prompt=build_system_prompt(organizacion_id, org_nombre, user_nombre),
                 mcp_servers=self._get_mcp_servers(),
-                permission_mode="bypassPermissions",
+                permission_mode="acceptEdits",
                 model="sonnet",
                 env=openrouter_env,
             )
