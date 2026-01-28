@@ -18,11 +18,11 @@ RUN npm install -g @anthropic-ai/claude-code
 WORKDIR /app
 
 # Copiar archivos de dependencias primero (cache de Docker)
-COPY requirements.txt .
+COPY bot/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar el resto del código
-COPY . .
+# Copiar solo la carpeta bot
+COPY bot/ .
 
 # Puerto
 EXPOSE 8000
