@@ -12,6 +12,7 @@ dependencies = [
     "pydantic-settings>=2.6.0",
     "supabase>=2.11.0",
     "groq>=0.13.0",
+    "telegramify-markdown>=0.1.0",
 ]
 
 [project.optional-dependencies]

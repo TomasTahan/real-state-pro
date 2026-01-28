@@ -1,6 +1,7 @@
 import logging
 import os
 
+import telegramify_markdown
 from fastapi import APIRouter, Request
 from pydantic import ValidationError
 
@@ -85,7 +86,17 @@ async def telegram_webhook(request: Request):
         user_nombre=user_data.user_nombre or "Usuario",
     )
 
-    await telegram.send_message(chat_id, response, reply_to_message_id=message.message_id)
+    # Convertir markdown estándar a Telegram MarkdownV2
+    try:
+        converted = telegramify_markdown.markdownify(response)
+        await telegram.send_message(
+            chat_id, converted, reply_to_message_id=message.message_id, parse_mode="MarkdownV2"
+        )
+    except Exception:
+        # Fallback: enviar como texto plano si la conversión falla
+        await telegram.send_message(
+            chat_id, response, reply_to_message_id=message.message_id, parse_mode=None
+        )
     return {"ok": True}
 
 

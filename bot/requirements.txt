@@ -16,3 +16,6 @@ supabase>=2.11.0
 
 # Audio transcription (Groq Whisper)
 groq>=0.13.0
+
+# Telegram markdown formatting
+telegramify-markdown>=0.1.0
