@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Forzar modo claro en clientes de correo -->
+    <meta name="color-scheme" content="light only">
+    <meta name="supported-color-schemes" content="light">
+    <title>Recordatorio de Arriendo</title>
+    <style>
+        /* RESETEO DE ESTILOS PARA CLIENTES DE CORREO */
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+        table { border-collapse: collapse !important; }
+        body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #F4F4F7; color: #333333; }
+
+        /* ESTILOS ESPECÍFICOS */
+        .wrapper { width: 100%; table-layout: fixed; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background-color: #F4F4F7; padding-bottom: 40px; }
+        .main-table { background-color: #ffffff; margin: 0 auto; width: 100%; max-width: 600px; border-spacing: 0; font-family: sans-serif; color: #333333; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        .header { padding: 35px 40px; text-align: center; border-bottom: 1px solid #f7f7f7; }
+        .content { padding: 40px; }
+        .footer { padding: 20px 40px 40px 40px; text-align: center; font-size: 12px; color: #999999; background-color: #fafafa; border-top: 1px solid #f0f0f0; }
+
+        /* TARJETA CLARA (HERO) CON BORDE DE COLOR */
+        .amount-card {
+            background-color: #f7fafc !important;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%) !important;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            color: #1a202c !important;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 3px solid #3182ce;
+        }
+
+        /* BOTÓN CON DEGRADADO */
+        .btn-primary {
+            background-color: #1a202c;
+            background: linear-gradient(135deg, #1a202c 0%, #3e4c63 100%);
+            color: #ffffff !important;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 52px;
+            text-align: center;
+            text-decoration: none;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #000000 0%, #2d3748 100%);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+        }
+
+        /* TABLA DE DETALLES */
+        .details-table { width: 100%; border-collapse: collapse; }
+        .details-table td { padding: 14px 0; border-bottom: 1px solid #f0f0f0; font-size: 15px; }
+        .details-label { color: #666666; font-weight: 500; }
+        .details-value { text-align: right; font-weight: 700; color: #2d3748; letter-spacing: -0.2px; }
+        .last-row td { border-bottom: none; }
+
+        /* UTILIDADES TEXTO */
+        h1 { font-size: 24px; margin: 0 0 15px 0; font-weight: 700; color: #1a202c; letter-spacing: -0.5px; }
+        p { font-size: 15px; line-height: 1.6; margin: 0 0 25px 0; color: #555555; }
+
+        .amount-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #4a5568 !important;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 600;
+        }
+        .amount-value {
+            font-size: 38px;
+            font-weight: 700;
+            display: block;
+            letter-spacing: -1px;
+            color: #1a202c !important;
+            text-shadow: none;
+        }
+        .due-date-badge {
+            background-color: #3182ce !important;
+            color: #ffffff !important;
+            padding: 5px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            display: inline-block;
+            margin-top: 12px;
+            border: none;
+        }
+
+        /* RESPONSIVE */
+        @media screen and (max-width: 600px) {
+            .content { padding: 25px !important; }
+            .header { padding: 25px !important; }
+            .amount-value { font-size: 32px !important; }
+            .main-table { width: 100% !important; border-radius: 0 !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <center class="wrapper">
+        <table class="main-table" width="100%">
+
+            <!-- HEADER CON LOGO -->
+            <tr>
+                <td class="header">
+                    <img src="{{logo_url}}" alt="Logo Empresa" width="100" style="display: block; margin: 0 auto; border-radius: 4px;">
+                </td>
+            </tr>
+
+            <!-- CONTENIDO PRINCIPAL -->
+            <tr>
+                <td class="content">
+                    <!-- SALUDO -->
+                    <h1>Hola, {{arrendatario_nombre}}</h1>
+                    <p>Esperamos que tengas un excelente día. A continuación, te presentamos el detalle de tu arriendo para el periodo de <strong>{{periodo_formato}}</strong>.</p>
+
+                    <!-- TARJETA DE PAGO (HERO) -->
+                    <div class="amount-card" style="background-color: #f7fafc !important; color: #1a202c !important; border: 3px solid #3182ce;">
+                        <span class="amount-label" style="color: #4a5568 !important;">Total a Pagar</span>
+                        <span class="amount-value" style="color: #1a202c !important;">
+                            {{monto_formato}}
+                        </span>
+                        <span class="due-date-badge" style="background-color: #3182ce !important; color: #ffffff !important;">Vence el {{fecha_vencimiento_formato}}</span>
+                    </div>
+
+                    <!-- DETALLES TÉCNICOS -->
+                    <table class="details-table">
+                        <tr>
+                            <td class="details-label">N° de Folio</td>
+                            <td class="details-value">#{{folio}}</td>
+                        </tr>
+                        <tr>
+                            <td class="details-label">Periodo</td>
+                            <td class="details-value" style="text-transform: capitalize;">{{periodo_formato}}</td>
+                        </tr>
+                        <tr>
+                            <td class="details-label">Moneda</td>
+                            <td class="details-value">{{moneda}}</td>
+                        </tr>
+                        <tr>
+                            <td class="details-label">Fecha de Vencimiento</td>
+                            <td class="details-value" style="color: #e53e3e;">{{fecha_vencimiento_formato}}</td>
+                        </tr>
+                        <tr class="last-row">
+                            <td class="details-label">Estado</td>
+                            <td class="details-value" style="color: #d69e2e;">Pendiente de Pago</td>
+                        </tr>
+                    </table>
+
+                    <br><br>
+
+                    <!-- BOTÓN DE LLAMADA A LA ACCIÓN CON DEGRADADO -->
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>
+                                <a href="{{payment_link}}" target="_blank" class="btn-primary">
+                                    Pagar Ahora
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p style="text-align: center; margin-top: 25px; font-size: 13px; color: #a0aec0;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/758/758771.png" width="10" style="vertical-align: middle; opacity: 0.4; margin-right: 4px;">
+                        Transacción encriptada y segura.
+                    </p>
+                </td>
+            </tr>
+
+            <!-- FOOTER -->
+            <tr>
+                <td class="footer">
+                    <p style="margin-bottom: 12px; line-height: 1.5;">Has recibido este correo porque eres arrendatario activo.<br>Si ya realizaste el pago, por favor omite este mensaje.</p>
+                    <p style="font-weight: bold; color: #cbd5e0;">© 2025 {{org_nombre}}</p>
+                </td>
+            </tr>
+        </table>
+    </center>
+
+</body>
+</html>

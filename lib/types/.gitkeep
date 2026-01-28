@@ -1,0 +1,2 @@
+# Este directorio contiene los tipos generados automáticamente desde Supabase
+# Para actualizar los tipos, ejecuta: pnpm types:update

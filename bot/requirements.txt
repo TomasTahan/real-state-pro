@@ -1,0 +1,18 @@
+# Core
+fastapi>=0.115.0
+uvicorn>=0.32.0
+pydantic>=2.10.0
+pydantic-settings>=2.6.0
+python-dotenv>=1.0.0
+
+# Claude Agent SDK
+claude-agent-sdk>=0.1.19
+
+# HTTP client
+httpx>=0.28.0
+
+# Supabase
+supabase>=2.11.0
+
+# Audio transcription (Groq Whisper)
+groq>=0.13.0

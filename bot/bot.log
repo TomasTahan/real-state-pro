@@ -1,0 +1,37 @@
+INFO:     Will watch for changes in these directories: ['/Users/mac-tomy/Documents/prog/real-state-pro/bot']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [4822] using StatReload
+INFO:     Started server process [4825]
+INFO:     Waiting for application startup.
+2026-01-27 23:43:05,646 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8284252234:AAGkQg8FBUZULRRRXEG4m5XB1o-oOLDz7JM/setWebhook "HTTP/1.1 200 OK"
+2026-01-27 23:43:05,647 - main - INFO - Webhook configurado: https://bikes-differential-analyzed-comfortable.trycloudflare.com/webhook
+INFO:     Application startup complete.
+2026-01-27 23:43:21,499 - httpx - INFO - HTTP Request: GET https://bkqknkqmfqqehrbppndw.supabase.co/rest/v1/telegram_users?select=id%2Ctelegram_id%2Cuser_id%2Corganizacion_id&telegram_id=eq.802845631 "HTTP/2 200 OK"
+2026-01-27 23:43:21,632 - httpx - INFO - HTTP Request: GET https://bkqknkqmfqqehrbppndw.supabase.co/rest/v1/users?select=nombre%2Capellido&user_id=eq.5f3707b8-950a-4fac-afdc-22927b8b0935 "HTTP/2 200 OK"
+2026-01-27 23:43:21,758 - httpx - INFO - HTTP Request: GET https://bkqknkqmfqqehrbppndw.supabase.co/rest/v1/organizaciones?select=nombre&organizacion_id=eq.e9b30f26-69f8-42bb-9c4d-dc7bcad9e9ac "HTTP/2 200 OK"
+2026-01-27 23:43:21,758 - claude_agent_sdk._internal.transport.subprocess_cli - INFO - Using bundled Claude Code CLI: /Users/mac-tomy/Documents/prog/real-state-pro/bot/.venv/lib/python3.13/site-packages/claude_agent_sdk/_bundled/claude
+2026-01-27 23:43:29,811 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8284252234:AAGkQg8FBUZULRRRXEG4m5XB1o-oOLDz7JM/sendMessage "HTTP/1.1 200 OK"
+INFO:     91.108.5.38:0 - "POST /webhook HTTP/1.1" 200 OK
+2026-01-27 23:44:24,062 - httpx - INFO - HTTP Request: GET https://bkqknkqmfqqehrbppndw.supabase.co/rest/v1/telegram_users?select=id%2Ctelegram_id%2Cuser_id%2Corganizacion_id&telegram_id=eq.802845631 "HTTP/2 200 OK"
+2026-01-27 23:44:24,170 - httpx - INFO - HTTP Request: GET https://bkqknkqmfqqehrbppndw.supabase.co/rest/v1/users?select=nombre%2Capellido&user_id=eq.5f3707b8-950a-4fac-afdc-22927b8b0935 "HTTP/2 200 OK"
+2026-01-27 23:44:24,267 - httpx - INFO - HTTP Request: GET https://bkqknkqmfqqehrbppndw.supabase.co/rest/v1/organizaciones?select=nombre&organizacion_id=eq.e9b30f26-69f8-42bb-9c4d-dc7bcad9e9ac "HTTP/2 200 OK"
+2026-01-27 23:44:24,267 - claude_agent_sdk._internal.transport.subprocess_cli - INFO - Using bundled Claude Code CLI: /Users/mac-tomy/Documents/prog/real-state-pro/bot/.venv/lib/python3.13/site-packages/claude_agent_sdk/_bundled/claude
+2026-01-27 23:45:00,779 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8284252234:AAGkQg8FBUZULRRRXEG4m5XB1o-oOLDz7JM/sendMessage "HTTP/1.1 200 OK"
+INFO:     91.108.5.38:0 - "POST /webhook HTTP/1.1" 200 OK
+2026-01-27 23:50:55,957 - httpx - INFO - HTTP Request: GET https://bkqknkqmfqqehrbppndw.supabase.co/rest/v1/telegram_users?select=id%2Ctelegram_id%2Cuser_id%2Corganizacion_id&telegram_id=eq.802845631 "HTTP/2 200 OK"
+2026-01-27 23:50:56,075 - httpx - INFO - HTTP Request: GET https://bkqknkqmfqqehrbppndw.supabase.co/rest/v1/users?select=nombre%2Capellido&user_id=eq.5f3707b8-950a-4fac-afdc-22927b8b0935 "HTTP/2 200 OK"
+2026-01-27 23:51:09,280 - httpx - INFO - HTTP Request: GET https://bkqknkqmfqqehrbppndw.supabase.co/rest/v1/organizaciones?select=nombre&organizacion_id=eq.e9b30f26-69f8-42bb-9c4d-dc7bcad9e9ac "HTTP/2 200 OK"
+2026-01-27 23:51:09,283 - claude_agent_sdk._internal.transport.subprocess_cli - INFO - Using bundled Claude Code CLI: /Users/mac-tomy/Documents/prog/real-state-pro/bot/.venv/lib/python3.13/site-packages/claude_agent_sdk/_bundled/claude
+2026-01-27 23:51:34,686 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8284252234:AAGkQg8FBUZULRRRXEG4m5XB1o-oOLDz7JM/sendMessage "HTTP/1.1 200 OK"
+INFO:     91.108.5.38:0 - "POST /webhook HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-01-27 23:59:03,149 - main - INFO - Cerrando servidor...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [4825]
+INFO:     Started server process [7798]
+INFO:     Waiting for application startup.
+2026-01-27 23:59:05,511 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot8284252234:AAGkQg8FBUZULRRRXEG4m5XB1o-oOLDz7JM/setWebhook "HTTP/1.1 200 OK"
+2026-01-27 23:59:05,511 - main - INFO - Webhook configurado: https://bikes-differential-analyzed-comfortable.trycloudflare.com/webhook
+INFO:     Application startup complete.

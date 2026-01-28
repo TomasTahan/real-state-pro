@@ -1,0 +1,48 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv
+venv
+ENV
+env
+.eggs
+*.egg-info
+*.egg
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Testing
+.pytest_cache
+.coverage
+htmlcov
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+.env
+.env.local
+*.log
+
+# Documentation
+*.md
+!README.md
+
+# Build
+dist
+build
+
+# uv
+uv.lock
