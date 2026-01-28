@@ -17,7 +17,7 @@ class TelegramService:
         chat_id: int,
         text: str,
         reply_to_message_id: int | None = None,
-        parse_mode: str = "HTML",
+        parse_mode: str = "MarkdownV2",
     ) -> dict:
         """Envía un mensaje a un chat"""
         async with httpx.AsyncClient() as client:
