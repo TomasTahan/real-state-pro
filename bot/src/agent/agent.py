@@ -74,11 +74,14 @@ class RealStateAgent:
         """Crea las opciones del agente"""
         openrouter_env = self._get_openrouter_env()
 
+        allowed_tools = ["mcp__supabase__*"]
+
         if session_id:
             # Resumir sesión existente
             return ClaudeAgentOptions(
                 mcp_servers=self._get_mcp_servers(),
                 permission_mode="acceptEdits",
+                allowed_tools=allowed_tools,
                 model="sonnet",
                 resume=session_id,
                 env=openrouter_env,
@@ -89,6 +92,7 @@ class RealStateAgent:
                 system_prompt=build_system_prompt(organizacion_id, org_nombre, user_nombre),
                 mcp_servers=self._get_mcp_servers(),
                 permission_mode="acceptEdits",
+                allowed_tools=allowed_tools,
                 model="sonnet",
                 env=openrouter_env,
             )
