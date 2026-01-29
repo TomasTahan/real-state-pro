@@ -53,16 +53,17 @@ async def get_user_by_telegram_id(telegram_id: int) -> TelegramUserData | None:
     user_apellido = user_data.get("apellido", "")
     full_name = f"{user_nombre} {user_apellido}".strip() or "Usuario"
 
-    # Obtener nombre de la organización
+    # Obtener nombre y URL de la organización
     org_result = (
         supabase.table("organizaciones")
-        .select("nombre")
+        .select("nombre, url")
         .eq("organizacion_id", data["organizacion_id"])
         .maybe_single()
         .execute()
     )
     org_data = org_result.data or {}
     org_nombre = org_data.get("nombre")
+    org_url = org_data.get("url")
 
     return TelegramUserData(
         id=data["id"],
@@ -70,6 +71,7 @@ async def get_user_by_telegram_id(telegram_id: int) -> TelegramUserData | None:
         user_id=data["user_id"],
         organizacion_id=data["organizacion_id"],
         org_nombre=org_nombre,
+        org_url=org_url,
         user_nombre=full_name,
     )
 

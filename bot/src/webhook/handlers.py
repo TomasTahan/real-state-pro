@@ -84,6 +84,7 @@ async def telegram_webhook(request: Request):
         organizacion_id=user_data.organizacion_id,
         org_nombre=user_data.org_nombre or "Sin nombre",
         user_nombre=user_data.user_nombre or "Usuario",
+        org_url=user_data.org_url or "",
     )
 
     # Convertir markdown estándar a Telegram MarkdownV2

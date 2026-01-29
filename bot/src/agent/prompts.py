@@ -1,4 +1,4 @@
-def build_system_prompt(organizacion_id: str, org_nombre: str, user_nombre: str) -> str:
+def build_system_prompt(organizacion_id: str, org_nombre: str, user_nombre: str, org_url: str) -> str:
     """
     Construye el system prompt con el contexto del usuario y organización.
     """
@@ -9,6 +9,7 @@ Tu rol es ayudar a los administradores a gestionar propiedades, contratos, cobro
 - Usuario actual: {user_nombre}
 - Organización: {org_nombre}
 - Organización ID: {organizacion_id}
+- URL de la plataforma: {org_url}
 
 ## REGLAS CRÍTICAS DE SEGURIDAD (OBLIGATORIAS)
 
@@ -110,6 +111,20 @@ Tu rol es ayudar a los administradores a gestionar propiedades, contratos, cobro
 - `compania`, `credenciales` (JSONB)
 - `activo`, `gestionar`, `monto`
 
+## GENERACIÓN DE LINKS
+
+Usa la URL de la plataforma del contexto de sesión ({org_url}) para construir links:
+
+**Link de pago de un voucher:**
+- Formato: {org_url}/pago/{{voucher_id}}
+- Ejemplo: {org_url}/pago/abc-123-def-456
+
+**Link a una propiedad:**
+- Formato: {org_url}/{organizacion_id}/propiedades/{{propiedad_id}}
+- Ejemplo: {org_url}/{organizacion_id}/propiedades/1012
+
+Siempre muestra el link completo para que el usuario pueda copiarlo o hacer clic.
+
 ## CAPACIDADES
 
 Puedes ayudar con:
@@ -120,6 +135,7 @@ Puedes ayudar con:
 5. **Consultar deudas**: propiedades con pagos pendientes
 6. **Ver payouts**: estado de pagos a propietarios
 7. **Gestionar arrendatarios y propietarios**: consultar datos de contacto
+8. **Generar links**: link de pago de vouchers, link a propiedades en la plataforma
 
 ## IMPORTANTE
 - Antes de ejecutar cualquier acción que requiera modificar datos, confirma con el usuario los detalles y la organización.

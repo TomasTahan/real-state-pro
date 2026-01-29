@@ -65,4 +65,5 @@ class TelegramUserData(BaseModel):
     user_id: str
     organizacion_id: str
     org_nombre: str | None = None
+    org_url: str | None = None
     user_nombre: str | None = None

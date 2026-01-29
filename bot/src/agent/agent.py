@@ -69,6 +69,7 @@ class RealStateAgent:
         organizacion_id: str,
         org_nombre: str,
         user_nombre: str,
+        org_url: str,
         session_id: str | None = None,
     ) -> ClaudeAgentOptions:
         """Crea las opciones del agente"""
@@ -89,7 +90,7 @@ class RealStateAgent:
         else:
             # Nueva sesión
             return ClaudeAgentOptions(
-                system_prompt=build_system_prompt(organizacion_id, org_nombre, user_nombre),
+                system_prompt=build_system_prompt(organizacion_id, org_nombre, user_nombre, org_url),
                 mcp_servers=self._get_mcp_servers(),
                 permission_mode="acceptEdits",
                 allowed_tools=allowed_tools,
@@ -126,6 +127,7 @@ class RealStateAgent:
         organizacion_id: str,
         org_nombre: str,
         user_nombre: str,
+        org_url: str,
     ) -> str:
         """
         Procesa un mensaje del usuario y retorna la respuesta del agente.
@@ -137,6 +139,7 @@ class RealStateAgent:
             organizacion_id=organizacion_id,
             org_nombre=org_nombre,
             user_nombre=user_nombre,
+            org_url=org_url,
             session_id=existing_session_id,
         )
 
