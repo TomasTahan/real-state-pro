@@ -13,10 +13,16 @@ from src.services.telegram import get_telegram_service
 from src.webhook.handlers import router as webhook_router
 
 
+# Configurar logging con formato más limpio para EasyPanel
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    format="%(asctime)s | %(levelname)s | %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
 )
+# Reducir verbosidad de httpx (solo errores)
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
+
 logger = logging.getLogger(__name__)
 
 

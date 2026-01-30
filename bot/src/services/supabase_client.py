@@ -153,3 +153,44 @@ async def create_telegram_user(
         user_id=data["user_id"],
         organizacion_id=data["organizacion_id"],
     )
+
+
+async def save_telegram_message(
+    telegram_user_id: str | None,
+    telegram_id: int,
+    chat_id: int,
+    direction: str,
+    content: str,
+    content_type: str = "text",
+    message_id: int | None = None,
+    metadata: dict | None = None,
+) -> None:
+    """
+    Guarda un mensaje en el historial de telegram_messages.
+
+    Args:
+        telegram_user_id: ID del usuario en telegram_users (puede ser None si no está vinculado)
+        telegram_id: ID de Telegram del usuario
+        chat_id: ID del chat
+        direction: 'incoming' (usuario) o 'outgoing' (bot)
+        content: Contenido del mensaje
+        content_type: 'text', 'voice', 'document', 'photo'
+        message_id: ID del mensaje en Telegram
+        metadata: Datos adicionales (org_id, etc)
+    """
+    supabase = get_supabase()
+
+    try:
+        supabase.table("telegram_messages").insert({
+            "telegram_user_id": telegram_user_id,
+            "telegram_id": telegram_id,
+            "chat_id": chat_id,
+            "direction": direction,
+            "content": content,
+            "content_type": content_type,
+            "message_id": message_id,
+            "metadata": metadata or {},
+        }).execute()
+    except Exception:
+        # No fallar si no se puede guardar el mensaje
+        pass
